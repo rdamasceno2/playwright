@@ -1,0 +1,24 @@
+[
+    {
+     "username" : "damasceno999@gmail.com",
+     "password" : "Learning1",
+     "productName" : "IPHONE 13 PRO",
+     "countryName" : "Brazil",
+     "month" : "04",
+     "year" : "22",
+     "csv" : "123",
+     "name" : "Raphael Doe",
+     "coupon" : "rahulshettyacademy"
+    },
+    {
+    "username" : "damasceno99@hotmail.com",
+    "password" : "Learning2",
+    "productName" : "ADIDAS ORIGINAL",
+    "countryName" : "Brazil",
+    "month" : "04",
+    "year" : "22",
+    "csv" : "123",
+    "name" : "Raphael Doe",
+    "coupon" : "rahulshettyacademy"
+    }
+]
