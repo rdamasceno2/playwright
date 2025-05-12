@@ -31,50 +31,18 @@ for(const data of dataset)
     await paymentPage.validateShippingInformation(data.username);
     await paymentPage.SearchCountryAndSelect(data.countryName);
     const trimmedOrderId = await paymentPage.SubmitAndGetOrderId();
-   
-   
+    // Orders page actions
+    const ordersPage = poManager.getOrdersPage(); // Add a new page object for OrdersPage
+    await ordersPage.navigateToOrdersPage();
+    const orderFound = await ordersPage.findOrderById(trimmedOrderId, data.username, data.countryName);
 
-    // Click the button to navigate to the orders page
-    await page.waitForSelector('tbody');
-    await page.locator("button[routerlink*='myorders']").click();
+    // Assertions
+    expect(orderFound).toBeTruthy();
 
-    // Set the maximum number of retries
-    const maxRetries = 3;
-    let attempt = 0;
-    let orderRow;
 
-    while (attempt < maxRetries) {
-        // Locate the row that contains the specific order ID
-        orderRow = page.locator(`tr:has(th:has-text("${trimmedOrderId}"))`);
-        console.log(`Looking for order ID: ${trimmedOrderId}, Attempt: ${attempt + 1}`);
 
-        // Check if the row exists before trying to get its content
-        if (await orderRow.count() > 0) {
-            const rowContent = await orderRow.textContent();
-            console.log(rowContent); // Print the entire row content
-
-            // Example: Click the "View" button in that row
-            const viewButton = orderRow.locator('button.btn.btn-primary');
-            await viewButton.click();
-            break; // Exit the loop if found
-        } else {
-            console.error(`Order row with ID ${trimmedOrderId} not found on attempt ${attempt + 1}.`);
-
-            // Optionally, wait for some time before the next attempt
-            await page.waitForTimeout(2000); // Wait for 2 seconds before retrying
-            attempt++;
-        }
-    }
-
-    if (attempt === maxRetries) {
-        console.error(`Order row with ID ${trimmedOrderId} not found after ${maxRetries} attempts.`);
-    }
-    await expect(page.locator(".col-text.-main")).toHaveText(trimmedOrderId);
-    await expect(page.locator("p.text").first()).toHaveText(data.username);
-    await expect(page.locator("p.text").nth(1)).toContainText(data.countryName);
-});
-    }
-
+    })}
+    
 customtest('Client App login', async ({ page, testDataForOrder }) => {
     const poManager= new POManager(page);
     const loginPage = poManager.getLoginPage()
