@@ -1,0 +1,50 @@
+Test Case ID,Test Scenario,Test Steps,Test Data,Expected Result,Actual Result,Status
+LOGIN_001,Valid Login,"1. Navigate to login page
+2. Enter valid email
+3. Enter valid password
+4. Click login button",Email: damasceno999@gmail.com
+Password: Learning1,"1. User should be redirected to dashboard
+2. Welcome message should be displayed
+3. User should see 'Automation Practice' text",,
+LOGIN_002,Invalid Email Format,"1. Navigate to login page
+2. Enter invalid email format
+3. Enter valid password
+4. Click login button",Email: invalidemail
+Password: Learning1,"1. Error message should be displayed
+2. User should remain on login page
+3. Message should indicate invalid email format",,
+LOGIN_003,Invalid Password,"1. Navigate to login page
+2. Enter valid email
+3. Enter wrong password
+4. Click login button",Email: damasceno999@gmail.com
+Password: WrongPass123,"1. Error message should be displayed
+2. User should remain on login page
+3. Message should indicate incorrect credentials",,
+LOGIN_004,Empty Email Field,"1. Navigate to login page
+2. Leave email field empty
+3. Enter valid password
+4. Click login button",Email: 
+Password: Learning1,"1. Error message should be displayed
+2. Login button should be disabled
+3. Message should indicate email is required",,
+LOGIN_005,Empty Password Field,"1. Navigate to login page
+2. Enter valid email
+3. Leave password field empty
+4. Click login button",Email: damasceno999@gmail.com
+Password: ,"1. Error message should be displayed
+2. Login button should be disabled
+3. Message should indicate password is required",,
+LOGIN_006,Both Fields Empty,"1. Navigate to login page
+2. Leave email field empty
+3. Leave password field empty
+4. Click login button",Email: 
+Password: ,"1. Error message should be displayed
+2. Login button should be disabled
+3. Message should indicate both fields are required",,
+LOGIN_007,Special Characters in Email,"1. Navigate to login page
+2. Enter email with special characters
+3. Enter valid password
+4. Click login button",Email: test@#$%@test.com
+Password: Learning1,"1. Error message should be displayed
+2. User should remain on login page
+3. Message should indicate invalid email format",,

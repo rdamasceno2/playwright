@@ -3,12 +3,20 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test tests/webApp2.spec.js --headed",
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:ui": "npx playwright test --ui",
     "allure": "npx playwright test --reporter=line,allure-playwright",
-    "allureReports": "npx allure generate ./allure-results --clean && npx allure open",
-    "webTests": "npx playwright test --grep @Web",
-    "APITests": "npx playwright test --grep @API",
-    "SafariNewConfig": "npx playwright test --config playwright.config1.js --project=safari"
+    "allure:report": "npx allure generate ./allure-results --clean && npx allure open",
+    "allure:clear": "rm -rf ./allure-results/* ./allure-report/*",
+    "test:regression": "npx playwright test --grep @regression",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:api": "npx playwright test --grep @API",
+    "test:e2e": "npx playwright test --grep @E2E",
+    "test:ci": "npx playwright test --shard=$SHARD",
+    "test:parallel": "npx playwright test --workers=4",
+    "report": "npx playwright show-report"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +26,9 @@
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.14.1",
     "allure-commandline": "^2.34.0",
-    "allure-playwright": "^3.2.1",
+    "allure-playwright": "^3.2.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {
