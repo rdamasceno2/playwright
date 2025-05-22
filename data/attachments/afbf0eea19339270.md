@@ -1,0 +1,220 @@
+# Test info
+
+- Name: E2E flow test
+- Location: /home/runner/work/playwright/playwright/tests/client.spec.js:8:5
+
+# Error details
+
+```
+TimeoutError: locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('.ta-results') to be visible
+
+    at /home/runner/work/playwright/playwright/tests/client.spec.js:60:20
+```
+
+# Page snapshot
+
+```yaml
+- navigation:
+  - link "Automation Automation Practice":
+    - /url: ""
+    - heading "Automation" [level=3]
+    - paragraph: Automation Practice
+  - link "QA Meetup with Rahul Shetty @Pune - Limited Seats! Book Now!":
+    - /url: https://qasummit.org/
+  - list:
+    - listitem:
+      - button " HOME"
+    - listitem
+    - listitem:
+      - button " ORDERS"
+    - listitem:
+      - button " Cart 1"
+    - listitem:
+      - button "Sign Out"
+- text: "IPHONE 13 PRO $ 231500 Quantity: 1"
+- list:
+  - listitem: iphonenew
+- text: Payment Method Credit Card Paypal SEPA Invoice Personal Information Credit Card Number
+- textbox: 4542 9931 9292 2293
+- text: Expiry Date
+- combobox:
+  - option "01"
+  - option "02" [selected]
+  - option "03"
+  - option "04"
+  - option "05"
+  - option "06"
+  - option "07"
+  - option "08"
+  - option "09"
+  - option "10"
+  - option "11"
+  - option "12"
+- combobox:
+  - option "01"
+  - option "02"
+  - option "03"
+  - option "04"
+  - option "05"
+  - option "06"
+  - option "07"
+  - option "08"
+  - option "09"
+  - option "10"
+  - option "11"
+  - option "12"
+  - option "13"
+  - option "14"
+  - option "15"
+  - option "16"
+  - option "17"
+  - option "18"
+  - option "19"
+  - option "20"
+  - option "21"
+  - option "22" [selected]
+  - option "23"
+  - option "24"
+  - option "25"
+  - option "26"
+  - option "27"
+  - option "28"
+  - option "29"
+  - option "30"
+  - option "31"
+- text: CVV Code ?
+- textbox: "123"
+- text: Name on Card
+- textbox: Raphael Doe
+- text: Apply Coupon
+- textbox: rahulshettyacademy
+- paragraph: "* Coupon Applied"
+- button "Apply Coupon"
+- text: Shipping Information damasceno999@gmail.com
+- textbox: damasceno999@gmail.com
+- textbox "Select Country"
+- text: Place Order
+```
+
+# Test source
+
+```ts
+   1 | // @ts-check
+   2 | import { test, expect } from '@playwright/test';
+   3 |
+   4 |
+   5 |
+   6 |
+   7 |
+   8 | test('E2E flow test', async ({ page }) => {
+   9 |     const email = "damasceno999@gmail.com";
+   10 |     const productName = 'IPHONE 13 PRO';
+   11 |
+   12 |     // Navigate to the login page
+   13 |     await page.goto('https://rahulshettyacademy.com/client');
+   14 |     
+   15 |     // Validate the page title
+   16 |     await expect(page).toHaveTitle("Let's Shop");
+   17 |     
+   18 |     // Fill in the login form
+   19 |     await page.fill('#userEmail', email);
+   20 |     await page.fill('#userPassword', 'Learning1');
+   21 |     await page.click('#login');
+   22 |   
+   23 |     // Validate that the expected text is present
+   24 |     await expect(page.locator('.left.mt-1 p')).toHaveText('Automation Practice');
+   25 |     
+   26 |     // Get card titles
+   27 |     await page.locator('.card-body b').first().waitFor();
+   28 |     const all_Titles =  await  page.locator('.card-body b').allTextContents();
+   29 |     const iphoneCard = page.locator('.card-body').filter({ hasText: productName });
+   30 |     await iphoneCard.locator("text=Add To Cart").click();
+   31 |   
+   32 |     const cartButton = page.locator('button.btn-custom:has-text("Cart")');
+   33 |     await cartButton.click();
+   34 |
+   35 |
+   36 |     // Check if the item is visible
+   37 |     await expect(page.locator('.cartSection h3')).toHaveText(productName);
+   38 |     await page.locator('text=Checkout').click();
+   39 |     const month_dropdown = await page.locator('div.field:has-text("Expiry Date") select.input.ddl').first();
+   40 |     const year_dropdown = await page.locator('div.field:has-text("Expiry Date") select.input.ddl').last();
+   41 |     await month_dropdown.selectOption({ label: '02' });
+   42 |     await year_dropdown.selectOption({ label: '22' });
+   43 |     const cvvInput = await page.locator('div.field.small input.txt').first();
+   44 |
+   45 |     // Input the CVV code
+   46 |     await cvvInput.fill('123'); // Replace '123' with the actual CVV code you want to input
+   47 |     // Locate the input field where the title is "Name on Card"
+   48 |     const nameOnCardInput = page.locator('div.field:has-text("Name on Card") input.txt');
+   49 |
+   50 |     // Input the name on the card
+   51 |     await nameOnCardInput.fill('Raphael Doe');
+   52 |     const couponInput = page.locator("[name='coupon']");
+   53 |
+   54 |     // Input the coupon code
+   55 |     await couponInput.fill('rahulshettyacademy')
+   56 |     await page.locator('button.btn.btn-primary:has-text("Apply Coupon")').click();
+   57 |     expect(page.locator(".user__name [type='text']").first()).toHaveText(email);
+   58 |     await page.locator("[placeholder*='Country']").pressSequentially("bra", {delay:100});
+   59 |     const dropdown = page.locator(".ta-results");
+>  60 |     await dropdown.waitFor();
+      |                    ^ TimeoutError: locator.waitFor: Timeout 30000ms exceeded.
+   61 |     const optionsCount = await dropdown.locator("button").count();
+   62 |     for (let i = 0; i < optionsCount; ++i) {
+   63 |        const text = await dropdown.locator("button").nth(i).textContent();
+   64 |        if (text === " Brazil") {
+   65 |           await dropdown.locator("button").nth(i).click();
+   66 |           break;
+   67 |        }
+   68 |     }
+   69 |     await page.locator('text=Place Order').click();
+   70 |     await expect(page.locator('.hero-primary')).toHaveText(" Thankyou for the order. ")
+   71 |     // Retrieve the order ID from the label
+   72 |     const orderId = await page.locator('label.ng-star-inserted').textContent();
+   73 |     const cleanedValue = orderId.replace(/\|/g, '').trim();
+   74 |     const trimmedOrderId = cleanedValue.trim(); // Trim whitespace
+   75 |
+   76 |     // Click the button to navigate to the orders page
+   77 |     await page.waitForSelector('tbody');
+   78 |     await page.locator("button[routerlink*='myorders']").click();
+   79 |
+   80 |     // Set the maximum number of retries
+   81 |     const maxRetries = 3;
+   82 |     let attempt = 0;
+   83 |     let orderRow;
+   84 |
+   85 |     while (attempt < maxRetries) {
+   86 |         // Locate the row that contains the specific order ID
+   87 |         orderRow = page.locator(`tr:has(th:has-text("${trimmedOrderId}"))`);
+   88 |         console.log(`Looking for order ID: ${trimmedOrderId}, Attempt: ${attempt + 1}`);
+   89 |
+   90 |         // Check if the row exists before trying to get its content
+   91 |         if (await orderRow.count() > 0) {
+   92 |             const rowContent = await orderRow.textContent();
+   93 |             console.log(rowContent); // Print the entire row content
+   94 |
+   95 |             // Example: Click the "View" button in that row
+   96 |             const viewButton = orderRow.locator('button.btn.btn-primary');
+   97 |             await viewButton.click();
+   98 |             break; // Exit the loop if found
+   99 |         } else {
+  100 |             console.error(`Order row with ID ${trimmedOrderId} not found on attempt ${attempt + 1}.`);
+  101 |
+  102 |             // Optionally, wait for some time before the next attempt
+  103 |             await page.waitForTimeout(2000); // Wait for 2 seconds before retrying
+  104 |             attempt++;
+  105 |         }
+  106 |     }
+  107 |
+  108 |     if (attempt === maxRetries) {
+  109 |         console.error(`Order row with ID ${trimmedOrderId} not found after ${maxRetries} attempts.`);
+  110 |     }
+  111 |     await expect(page.locator(".col-text.-main")).toHaveText(trimmedOrderId);
+  112 |     await expect(page.locator("p.text").first()).toHaveText(email);
+  113 |     await expect(page.locator("p.text").nth(1)).toContainText("Brazil");
+  114 |   });
+  115 |
+```
