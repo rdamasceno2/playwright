@@ -15,7 +15,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1/3, 2/3, 3/3]
+        # Split tests by test file pattern
+        file_pattern: 
+          - 'tests/ui/**/*.spec.js'
+          - 'tests/api/**/*.spec.js'
+          - 'tests/e2e/**/*.spec.js'
 
     steps:
     - uses: actions/checkout@v4
@@ -33,7 +37,7 @@ jobs:
       run: npx playwright install --with-deps
       
     - name: Run Playwright tests
-      run: npx playwright test --shard ${{ matrix.shard }}
+      run: npx playwright test ${{ matrix.file_pattern }}
       env:
         CI: true
       
@@ -41,7 +45,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: playwright-report-${{ matrix.shard == '1/3' && '1_3' || matrix.shard == '2/3' && '2_3' || '3_3' }}
+        name: playwright-report-${{ matrix.file_pattern == 'tests/ui/**/*.spec.js' && 'ui' || matrix.file_pattern == 'tests/api/**/*.spec.js' && 'api' || 'e2e' }}
         path: |
           playwright-report/
           test-results/
@@ -57,7 +61,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: allure-report-${{ matrix.shard == '1/3' && '1_3' || matrix.shard == '2/3' && '2_3' || '3_3' }}
+        name: allure-report-${{ matrix.file_pattern == 'tests/ui/**/*.spec.js' && 'ui' || matrix.file_pattern == 'tests/api/**/*.spec.js' && 'api' || 'e2e' }}
         path: allure-report/
         retention-days: 30
 
@@ -76,4 +80,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.RAFA_GITHUB_TOKEN }}
-          publish_dir: all-artifacts/allure-report-1_3  # Using first shard's report as main
+          publish_dir: all-artifacts/allure-report-ui  # Using UI tests report as main
