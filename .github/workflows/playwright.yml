@@ -15,11 +15,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Split tests by test file pattern
-        file_pattern: 
-          - 'tests/ui/**/*.spec.js'
-          - 'tests/api/**/*.spec.js'
-          - 'tests/e2e/**/*.spec.js'
+        # Run each test file in parallel
+        testFile:
+          - 'tests/login.spec.js'
+          - 'tests/ClientAppPO.spec.js'
+          - 'tests/webApp2.spec.js'
+          - 'tests/example.spec.js'
+          - 'tests/llc.spec.js'
+          - 'tests/download.spec.js'
+          - 'tests/client.spec.js'
+          - 'tests/webApp1.spec.ts'
+          - 'tests/NetworkTest.spec.js'
+          - 'tests/search-garfield.spec.ts'
+          - 'tests/ClientAppPO.spec.ts'
+          - 'tests/MoreValidation.spec.js'
+          - 'tests/calender.spec.js'
 
     steps:
     - uses: actions/checkout@v4
@@ -37,7 +47,7 @@ jobs:
       run: npx playwright install --with-deps
       
     - name: Run Playwright tests
-      run: npx playwright test ${{ matrix.file_pattern }}
+      run: npx playwright test ${{ matrix.testFile }}
       env:
         CI: true
       
@@ -45,7 +55,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: playwright-report-${{ matrix.file_pattern == 'tests/ui/**/*.spec.js' && 'ui' || matrix.file_pattern == 'tests/api/**/*.spec.js' && 'api' || 'e2e' }}
+        name: playwright-report-${{ matrix.testFile == 'tests/login.spec.js' && 'login' || matrix.testFile == 'tests/ClientAppPO.spec.js' && 'clientapp' || matrix.testFile == 'tests/webApp2.spec.js' && 'webapp2' || matrix.testFile == 'tests/example.spec.js' && 'example' || matrix.testFile == 'tests/llc.spec.js' && 'llc' || matrix.testFile == 'tests/download.spec.js' && 'download' || matrix.testFile == 'tests/client.spec.js' && 'client' || matrix.testFile == 'tests/webApp1.spec.ts' && 'webapp1' || matrix.testFile == 'tests/NetworkTest.spec.js' && 'network' || matrix.testFile == 'tests/search-garfield.spec.ts' && 'search' || matrix.testFile == 'tests/ClientAppPO.spec.ts' && 'clientapp-ts' || matrix.testFile == 'tests/MoreValidation.spec.js' && 'validation' || 'calendar' }}
         path: |
           playwright-report/
           test-results/
@@ -61,7 +71,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: allure-report-${{ matrix.file_pattern == 'tests/ui/**/*.spec.js' && 'ui' || matrix.file_pattern == 'tests/api/**/*.spec.js' && 'api' || 'e2e' }}
+        name: allure-report-${{ matrix.testFile == 'tests/login.spec.js' && 'login' || matrix.testFile == 'tests/ClientAppPO.spec.js' && 'clientapp' || matrix.testFile == 'tests/webApp2.spec.js' && 'webapp2' || matrix.testFile == 'tests/example.spec.js' && 'example' || matrix.testFile == 'tests/llc.spec.js' && 'llc' || matrix.testFile == 'tests/download.spec.js' && 'download' || matrix.testFile == 'tests/client.spec.js' && 'client' || matrix.testFile == 'tests/webApp1.spec.ts' && 'webapp1' || matrix.testFile == 'tests/NetworkTest.spec.js' && 'network' || matrix.testFile == 'tests/search-garfield.spec.ts' && 'search' || matrix.testFile == 'tests/ClientAppPO.spec.ts' && 'clientapp-ts' || matrix.testFile == 'tests/MoreValidation.spec.js' && 'validation' || 'calendar' }}
         path: allure-report/
         retention-days: 30
 
@@ -80,4 +90,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.RAFA_GITHUB_TOKEN }}
-          publish_dir: all-artifacts/allure-report-ui  # Using UI tests report as main
+          publish_dir: all-artifacts/allure-report-login  # Using login report as main
