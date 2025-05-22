@@ -1,0 +1,6 @@
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODA5MTA2N2ZjNzY1NDFhYWQzY2Y1MDQiLCJ1c2VyRW1haWwiOiJkYW1hc2Nlbm85OTlAZ21haWwuY29tIiwidXNlck1vYmlsZSI6MzMzMzMzMzMzMywidXNlclJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0NzkzMTY1NSwiZXhwIjoxNzc5NDg5MjU1fQ.aMdav3Atbc5htiYtH3uQcGPpdkszVYM8uVm2c6rMLoc
+{
+  orders: [ '682f52075d3fd9ffa0ff6cf5' ],
+  productOrderId: [ '67a8df1ac0d3e6622a297ccb' ],
+  message: 'Order Placed Successfully'
+}
