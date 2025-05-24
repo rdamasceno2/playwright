@@ -1,0 +1,148 @@
+# Test info
+
+- Name: Login Scenarios >> LOGIN_003 - Invalid Password
+- Location: /home/runner/work/playwright/playwright/tests/login.spec.js:28:5
+
+# Error details
+
+```
+TimeoutError: page.goto: Timeout 60000ms exceeded.
+Call log:
+  - navigating to "https://rahulshettyacademy.com/client", waiting until "load"
+
+    at /home/runner/work/playwright/playwright/tests/login.spec.js:5:20
+```
+
+# Page snapshot
+
+```yaml
+- banner:
+  - text: Ecom
+  - link " dummywebsite@rahulshettyacademy.com":
+    - /url: emailto:dummywebsite@rahulshettyacademy.com
+  - link "":
+    - /url: "#"
+  - link "":
+    - /url: "#"
+  - link "":
+    - /url: "#"
+  - link "":
+    - /url: "#"
+- heading "We Make Your Shopping Simple" [level=3]
+- heading "Practice Website for Rahul Shetty Academy Students" [level=1]:
+  - text: Practice Website for
+  - emphasis: Rahul Shetty Academy
+  - text: Students
+- link "Register":
+  - /url: /client/auth/register
+- paragraph: Register to sign in with your personal account
+- heading "Log in" [level=1]
+- text: Email
+- textbox "email@example.com"
+- text: Password
+- textbox "enter your passsword"
+- button "Login"
+- link "Forgot password?":
+  - /url: /client/auth/password-new
+- paragraph: Don't have an account? Register here
+- heading "Why People Choose Us?" [level=1]
+- text: 
+- heading "3546540" [level=1]
+- paragraph: Successfull Orders
+- text: 
+- heading "37653" [level=1]
+- paragraph: Customers
+- text: 
+- heading "3243" [level=1]
+- paragraph: Sellers
+- text: 
+- heading "4500+" [level=1]
+- paragraph: Daily Orders
+- text: 
+- heading "500+" [level=1]
+- paragraph: Daily New Customer Joining
+```
+
+# Test source
+
+```ts
+   1 | const { test, expect } = require('@playwright/test');
+   2 |
+   3 | test.describe('Login Scenarios', () => {
+   4 |     test.beforeEach(async ({ page }) => {
+>  5 |         await page.goto('https://rahulshettyacademy.com/client');
+     |                    ^ TimeoutError: page.goto: Timeout 60000ms exceeded.
+   6 |     });
+   7 |
+   8 |     test('LOGIN_001 - Valid Login', async ({ page }) => {
+   9 |         await page.fill('#userEmail', 'damasceno999@gmail.com');
+  10 |         await page.fill('#userPassword', 'Learning1');
+  11 |         await page.click('#login');
+  12 |         
+  13 |         // Verify redirect and welcome message
+  14 |         await expect(page.locator('.left.mt-1 p')).toHaveText('Automation Practice');
+  15 |     });
+  16 |
+  17 |     test('LOGIN_002 - Invalid Email Format', async ({ page }) => {
+  18 |         await page.fill('#userEmail', 'invalidemail');
+  19 |         await page.fill('#userPassword', 'Learning1');
+  20 |         await page.click('#login');
+  21 |         
+  22 |         // Verify error message
+  23 |         const errorMessage = page.locator('[class*="invalid-feedback"]');
+  24 |         await expect(errorMessage).toBeVisible();
+  25 |         await expect(errorMessage).toContainText('Email');
+  26 |     });
+  27 |
+  28 |     test('LOGIN_003 - Invalid Password', async ({ page }) => {
+  29 |         await page.fill('#userEmail', 'damasceno999@gmail.com');
+  30 |         await page.fill('#userPassword', 'WrongPass123');
+  31 |         await page.click('#login');
+  32 |         
+  33 |         // Verify error message
+  34 |         const errorToast = page.locator('[aria-label="Incorrect email or password."]');
+  35 |         await expect(errorToast).toBeVisible();
+  36 |     });
+  37 |
+  38 |     test('LOGIN_004 - Empty Email Field', async ({ page }) => {
+  39 |         await page.fill('#userPassword', 'Learning1');
+  40 |         await page.click('#login');
+  41 |         
+  42 |         // Verify error message
+  43 |         const errorMessage = page.locator('[class*="invalid-feedback"]');
+  44 |         await expect(errorMessage).toBeVisible();
+  45 |         await expect(errorMessage).toContainText('Email is required');
+  46 |     });
+  47 |
+  48 |     test('LOGIN_005 - Empty Password Field', async ({ page }) => {
+  49 |         await page.fill('#userEmail', 'damasceno999@gmail.com');
+  50 |         await page.click('#login');
+  51 |         
+  52 |         // Verify error message
+  53 |         const errorMessage = page.locator('[class*="invalid-feedback"]');
+  54 |         await expect(errorMessage).toBeVisible();
+  55 |         await expect(errorMessage).toContainText('Password is required');
+  56 |     });
+  57 |
+  58 |     test('LOGIN_006 - Both Fields Empty', async ({ page }) => {
+  59 |         await page.click('#login');
+  60 |         
+  61 |         // Verify error messages
+  62 |         const errorMessages = page.locator('[class*="invalid-feedback"]');
+  63 |         await expect(errorMessages).toHaveCount(2);
+  64 |         await expect(errorMessages).toContainText(['Email is required', 'Password is required']);
+  65 |     });
+  66 |
+  67 |     test('LOGIN_007 - Special Characters in Email', async ({ page }) => {
+  68 |         await page.fill('#userEmail', 'test@#$%@test.com');
+  69 |         await page.fill('#userPassword', 'Learning1');
+  70 |         await page.click('#login');
+  71 |         
+  72 |         // Verify error message
+  73 |         const errorMessage = page.locator('[class*="invalid-feedback"]');
+  74 |         await expect(errorMessage).toBeVisible();
+  75 |         await expect(errorMessage).toContainText('Enter Valid Email');
+  76 |     });
+  77 | });
+  78 |
+```
